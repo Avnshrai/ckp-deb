@@ -99,6 +99,7 @@ jobs:
            #echo "/etc/systemd/system/kubelet.service.d/10-kubeadm.conf" >> DEBIAN/conffiles
            touch kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            cat kubeadm/postinst > kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
+           chmod 0777 kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            dpkg --build kubeadm_${{ env.VERSION }}-00_amd64
       
       - name: Making Kubelet Deb packages
@@ -155,8 +156,11 @@ jobs:
            touch kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/postrm
            touch kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/prerm
            cat kubelet/postinst > kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
+           chmod 777 kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            cat kubelet/postrm > kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/postrm
+           chmod 777 kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/postrm
            cat kubelet/prerm > kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/prerm
+           chmod 777 kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/prerm
            dpkg --build kubelet_${{ env.VERSION }}-00_amd64
       
       - name: signing deb packages
