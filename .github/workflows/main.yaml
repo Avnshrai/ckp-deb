@@ -39,7 +39,7 @@ jobs:
            ./_output/dockerized/bin/linux/amd64/kubeadm version
            git clone https://github.com/Avnshrai/ckp-deb.git
            rm -rf .github .git
-           chmod -R 664 ckp-deb/*
+           chmod 777 ckp-deb/*
            mv ckp-deb/* .
             
       - name: signing the binaries
