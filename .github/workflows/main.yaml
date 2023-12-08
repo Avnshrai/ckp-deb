@@ -26,8 +26,7 @@ jobs:
         run: sudo apt install make dpkg -y
 
       - name: exporting env's and building deb's
-        run:  |   
-           pwd
+        run:  |
            export KUBE_GIT_MAJOR=1
            export KUBE_GIT_COMMIT='d1483fdf7a0578c83523bc1e2212a606a44fd71d'
            export KUBE_GIT_MINOR='26+'
@@ -40,7 +39,9 @@ jobs:
            ./_output/dockerized/bin/linux/amd64/kubeadm version
            git clone https://github.com/Avnshrai/ckp-deb.git
            rm -rf .github .git
+           chmod -R 664 ckp-deb/*
            mv ckp-deb/* .
+            
       - name: signing the binaries
         shell: bash
         run: | 
