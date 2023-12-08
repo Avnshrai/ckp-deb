@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v3
         with:
            repository: 'kubernetes/kubernetes'
+           ref: ${{ env.RELEASE-VERSION }}
       - name: Installing make
         run: sudo apt install make dpkg -y
 
@@ -35,7 +36,6 @@ jobs:
            echo v${{ env.VERSION }}-ckp
            # mkdir -p kubeadm_${{ env.VERSION }}-00_amd64/usr/bin 
            # echo kubeadm_${{ env.VERSION }}-00_amd64
-           git checkout -b ${{ env.RELEASE-VERSION }}
            make quick-release
            ./_output/dockerized/bin/linux/amd64/kubeadm version
       - name: signing the binaries
