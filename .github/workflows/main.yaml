@@ -34,7 +34,7 @@ jobs:
            echo v${{ env.VERSION }}-ckp
            # mkdir -p kubeadm_${{ env.VERSION }}-00_amd64/usr/bin 
            # echo kubeadm_${{ env.VERSION }}-00_amd64
-           git checkout ${{ env.RELEASE-VERSION }}
+           git checkout -b ${{ env.RELEASE-VERSION }}
            make quick-release
            ./_output/dockerized/bin/linux/amd64/kubeadm version
       - name: signing the binaries
