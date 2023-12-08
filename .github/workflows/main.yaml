@@ -16,6 +16,25 @@ jobs:
       #- '108'
     name: clone and create deb
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+           repository: 'kubernetes/kubernetes'
+      - name: Installing make
+        run: sudo apt install make dpkg -y
+
+      - name: exporting env's and building deb's
+        run:  |  
+           export KUBE_GIT_MAJOR=1
+           export KUBE_GIT_COMMIT='d1483fdf7a0578c83523bc1e2212a606a44fd71d'
+           export KUBE_GIT_MINOR='26+'
+           export KUBE_GIT_VERSION='v${{ env.VERSION }}-ckp'
+           export KUBE_GIT_TREE_STATE='clean'
+           echo v${{ env.VERSION }}-ckp
+           # mkdir -p kubeadm_${{ env.VERSION }}-00_amd64/usr/bin 
+           # echo kubeadm_${{ env.VERSION }}-00_amd64
+           make quick-release
+           ./_output/dockerized/bin/linux/amd64/kubeadm version
       - name: signing the binaries
         shell: bash
         run: | 
