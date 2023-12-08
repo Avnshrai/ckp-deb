@@ -55,7 +55,6 @@ jobs:
       - name: Making Kubeadm Deb packages
         shell: bash
         run: |
-           cd /home/core
            mkdir -p kubeadm_${{ env.VERSION }}-00_amd64/usr/bin 
            mkdir -p kubeadm_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service.d
            echo kubeadm_${{ env.VERSION }}-00_amd64
@@ -101,7 +100,6 @@ jobs:
       - name: Making Kubelet Deb packages
         shell: bash
         run: |
-           cd /home/core
            mkdir -p kubelet_${{ env.VERSION }}-00_amd64/usr/bin
            mkdir -p kubelet_${{ env.VERSION }}-00_amd64/DEBIAN
            mkdir -p kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system
@@ -160,7 +158,6 @@ jobs:
       - name: signing deb packages
         shell: bash
         run: |
-          cd /home/core
           sudo apt-get install dpkg-sig
           #GPG_TTY=$(tty)
           #export GPG_TTY
