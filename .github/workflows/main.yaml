@@ -86,17 +86,8 @@ jobs:
            EOF
            
            touch kubeadm_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service.d/10-kubeadm.conf 
-           cat <<EOF > kubeadm_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-           [Service]
-           Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
-           Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
-           EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
-           EnvironmentFile=-/etc/default/kubelet
-           ExecStart=
-           ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
-           EOF
-
-           #echo "/etc/systemd/system/kubelet.service.d/10-kubeadm.conf" >> DEBIAN/conffiles
+           cat kubeadm/10-kubeadm.conf > kubeadm_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+           chmod 644 kubeadm_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
            touch kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            cat kubeadm/postinst > kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            chmod 775 kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
