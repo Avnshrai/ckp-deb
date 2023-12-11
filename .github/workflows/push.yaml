@@ -1,0 +1,69 @@
+name: push deb to dockerhub
+env:
+  VERSION: "1.26.10"
+  PATH: ""
+  Docker_user_name: "kubedrona"
+  Docker_pass: ""
+on: [ workflow_dispatch ]
+jobs:
+  script:
+    #runs-on: ubuntu-latest
+    runs-on:
+      # - self-hosted
+      - ckp
+      #- '108'
+    name: clone and create deb
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+           repository: 'vmware-tanzu/cluster-api-provider-bringyourownhost'
+           ref: 'main'
+      - name: Downloading other required packages
+        run: | 
+            cd installer/bundle_builder/ingredients/deb/
+            rm -rf Dockerfile
+            touch Dockerfile
+            cat <<EOF > Dockerfile
+            ARG BASE_IMAGE=ubuntu:20.04
+            FROM $BASE_IMAGE as build
+            ENV CONTAINERD_VERSION=1.6.18
+            ENV KUBERNETES_VERSION=${{env.VERSION}}-00
+            ENV ARCH=amd64
+            RUN apt-get update \
+                && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends sudo
+            WORKDIR /bundle-builder
+            COPY download.sh .
+            RUN chmod a+x download.sh
+            WORKDIR /ingredients
+            ENTRYPOINT ["/bundle-builder/download.sh"]
+            EOF
+
+            docker build -t byoh-ingredients-deb .
+            mkdir -p byoh-ingredients-download
+            chmod 777 byoh-ingredients-download
+            docker run --rm -v `pwd`/byoh-ingredients-download:/ingredients byoh-ingredients-deb
+      - name: Moving custom deb packages
+        run: |
+            cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
+            rm -rf kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb
+            mv PATH/kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
+      - name: Pushing bundles
+        run: |
+            cd installer/bundle_builder
+            rm -rf push-bundle.sh
+            cat <<EOF > push-bundle.sh
+            #!/bin/bash
+            set -e
+            mkdir local-bin/
+            curl -L https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=local-bin bash
+            export PATH=$PWD/local-bin/:$PATH
+            docker login -u ${{Docker_user_name}} -p ${{Docker_pass}}
+            echo Pushing bundle "$*"
+            imgpkg push -f . -i $@
+            echo Done
+            EOF
+
+            docker build -t byoh-build-push-bundle .
+            docker run --rm -v /ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/avnshrai/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v1.26.6
+
