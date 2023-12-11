@@ -125,33 +125,12 @@ jobs:
            dd8da554cf86fbd4937fea9d4459a2e2  lib/systemd/system/kubelet.service
            a1cdefcbbd6b3da2b6fdfee266b5ba1d  usr/bin/kubelet
            EOF
-
            touch kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service
            touch kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/rules
-           cat <<EOF > kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service
-           [Unit]
-           #Description=kubelet service
-           Description=kubelet: The Kubernetes Node Agent
-           Wants=network-online.target
-           After=network-online.target
-           [Service]
-           Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
-           Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
-           EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
-           EnvironmentFile=-/etc/default/kubelet
-           ExecStart=
-           ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
-           [Install]
-           WantedBy=multi-user.target
-           EOF
-          
-           cat <<EOF > kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/rules
-           #!/usr/bin/make -f 
-           %:
-             dh @ --with=systemd
-           override_dh_installinit:
-             dh_installinit --name=kubelet.service
-           EOF
+           cat kubelet/kubelet.service > kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service
+           chmod 664 kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/kubelet.service
+           cat kubelet/rules > kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/rules
+           chmod 664 kubelet_${{ env.VERSION }}-00_amd64/etc/systemd/system/rules
            touch kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            touch kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/postrm
            touch kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/prerm
