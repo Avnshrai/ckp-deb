@@ -5,7 +5,7 @@
 # It was finished successfully
 name: final_ci
 env:
-  VERSION: "1.26.6"
+  VERSION: "1.26.11"
   RELEASE-VERSION: "release-1.26"
 on: [ workflow_dispatch ]
 jobs:
@@ -21,14 +21,14 @@ jobs:
         uses: actions/checkout@v3
         with:
            repository: 'kubernetes/kubernetes'
-           ref: ${{ env.RELEASE-VERSION }}
+           ref: '3cd242c51317aed8858119529ccab22079f523b1'
       - name: Installing make
         run: sudo apt install make dpkg -y
 
       - name: exporting env's and building deb's
         run:  |
            export KUBE_GIT_MAJOR=1
-           export KUBE_GIT_COMMIT='d1483fdf7a0578c83523bc1e2212a606a44fd71d'
+           export KUBE_GIT_COMMIT='3cd242c51317aed8858119529ccab22079f523b1'
            export KUBE_GIT_MINOR='26+'
            export KUBE_GIT_VERSION='v${{ env.VERSION }}-ckp'
            export KUBE_GIT_TREE_STATE='clean'
@@ -38,7 +38,6 @@ jobs:
            make quick-release
            ./_output/dockerized/bin/linux/amd64/kubeadm version
            git clone https://github.com/Avnshrai/ckp-deb.git
-           rm -rf .github .git
            chmod 777 ckp-deb/*
            mv ckp-deb/* .
             
