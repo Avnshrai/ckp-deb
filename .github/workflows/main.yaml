@@ -143,6 +143,7 @@ jobs:
            cat kubectl/control > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/control
            cat kubectl/md5sums > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/md5sums
            cat kubectl/postinst > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
+           chmod 775 kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            cp _output/dockerized/bin/linux/amd64/kubectl kubectl_${{ env.VERSION }}-00_amd64/usr/bin/kubectl
            dpkg --build kubectl_${{ env.VERSION }}-00_amd64
 
