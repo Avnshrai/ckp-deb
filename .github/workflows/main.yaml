@@ -131,7 +131,21 @@ jobs:
            cat kubelet/prerm > kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/prerm
            chmod 775 kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/prerm
            dpkg --build kubelet_${{ env.VERSION }}-00_amd64
-      
+           
+      - name: creating kubectl deb package
+        shell: bash
+        run: |
+           mkdir -p kubectl_${{ env.VERSION }}-00_amd64/usr/bin 
+           mkdir -p kubectl_${{ env.VERSION }}-00_amd64/DEBIAN
+           touch kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/control
+           touch kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/md5sums
+           touch kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
+           cat kubectl/control > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/control
+           cat kubectl/md5sums > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/md5sums
+           cat kubectl/postinst > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
+           cp _output/dockerized/bin/linux/amd64/kubectl kubectl_${{ env.VERSION }}-00_amd64/usr/bin/kubectl
+           dpkg --build kubectl_${{ env.VERSION }}-00_amd64
+
       - name: signing deb packages
         shell: bash
         run: |
@@ -148,39 +162,34 @@ jobs:
           #gpg --verify kubeadm_${{ env.VERSION }}-00_amd64.deb.sig kubeadm_${{ env.VERSION }}-00_amd64.deb 
           #gpg --verify kubelet_${{ env.VERSION }}-00_amd64.deb.sig kubelet_${{ env.VERSION }}-00_amd64.deb 
       
-      # - name: pushing images to dockerhub
-      #   shell: bash
-      #   env: 
-      #      docker_pass: ${{secrets.DOCKER_PASSWORD}}
-      #      DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{secrets.DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE}}
-      #      docker_image_version: v1.27.5
-      #   run: |
-      #     docker login -u kubedrona -p $docker_pass
-      #     cd _output/release-images/amd64
-      #     docker load -i kube-scheduler.tar
-      #     docker load -i kube-proxy.tar
-      #     docker load -i kube-controller-manager.tar
-      #     docker load -i kube-apiserver.tar
+      - name: pushing images to dockerhub
+        shell: bash
+        env: 
+           docker_pass: ${{secrets.DOCKER_PASSWORD}}
+           DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{secrets.DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE}}
+           docker_image_version: v${{ env.VERSION }}
+        run: |
+          docker login -u kubedrona -p $docker_pass
+          cd _output/release-images/amd64
+          docker load -i kube-scheduler.tar
+          docker load -i kube-proxy.tar
+          docker load -i kube-controller-manager.tar
+          docker load -i kube-apiserver.tar
 
-      #     # docker pull registry.k8s.io/kube-proxy:$docker_image_version
-      #     # docker pull registry.k8s.io/kube-apiserver:$docker_image_version
-      #     # docker pull registry.k8s.io/kube-scheduler:$docker_image_version
-      #     # docker pull registry.k8s.io/kube-controller-manager:$docker_image_version
-
-      #     docker tag registry.k8s.io/kube-apiserver:$docker_image_version coredgeio/kube-apiserver:$docker_image_version
-      #     docker tag registry.k8s.io/kube-proxy:$docker_image_version coredgeio/kube-proxy:$docker_image_version
-      #     docker tag registry.k8s.io/kube-scheduler:$docker_image_version coredgeio/kube-scheduler:$docker_image_version
-      #     docker tag registry.k8s.io/kube-controller-manager:$docker_image_version coredgeio/kube-controller-manager:$docker_image_version
+          docker tag registry.k8s.io/kube-apiserver:$docker_image_version coredgeio/kube-apiserver:$docker_image_version
+          docker tag registry.k8s.io/kube-proxy:$docker_image_version coredgeio/kube-proxy:$docker_image_version
+          docker tag registry.k8s.io/kube-scheduler:$docker_image_version coredgeio/kube-scheduler:$docker_image_version
+          docker tag registry.k8s.io/kube-controller-manager:$docker_image_version coredgeio/kube-controller-manager:$docker_image_version
           
-      #     export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
-      #     docker trust sign coredgeio/kube-apiserver:$docker_image_version
-      #     docker trust sign coredgeio/kube-proxy:$docker_image_version
-      #     docker trust sign coredgeio/kube-scheduler:$docker_image_version
-      #     docker trust sign coredgeio/kube-controller-manager:$docker_image_version
-      #     docker push coredgeio/kube-apiserver:$docker_image_version
-      #     docker push coredgeio/kube-proxy:$docker_image_version
-      #     docker push coredgeio/kube-scheduler:$docker_image_version
-      #     docker push coredgeio/kube-controller-manager:$docker_image_version   
+          export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+          docker trust sign coredgeio/kube-apiserver:$docker_image_version
+          docker trust sign coredgeio/kube-proxy:$docker_image_version
+          docker trust sign coredgeio/kube-scheduler:$docker_image_version
+          docker trust sign coredgeio/kube-controller-manager:$docker_image_version
+          docker push coredgeio/kube-apiserver:$docker_image_version
+          docker push coredgeio/kube-proxy:$docker_image_version
+          docker push coredgeio/kube-scheduler:$docker_image_version
+          docker push coredgeio/kube-controller-manager:$docker_image_version   
 
       # - name: upload_artifacts
       #   uses: actions/upload-artifact@v3
