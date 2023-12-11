@@ -1,0 +1,10 @@
+Package: kubectl
+Version: 1.26.9-00
+Architecture: amd64
+Maintainer: Kubernetes Authors <kubernetes-dev+release@googlegroups.com>
+Installed-Size: 47585
+Section: misc
+Priority: optional
+Homepage: https://kubernetes.io
+Description: Kubernetes Command Line Tool
+ The Kubernetes command line tool for interacting with the Kubernetes API.
