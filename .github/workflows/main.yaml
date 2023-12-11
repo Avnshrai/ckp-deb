@@ -168,7 +168,8 @@ jobs:
         env: 
            docker_pass: ${{secrets.DOCKER_PASSWORD}}
            DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{secrets.DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE}}
-           docker_image_version: v${{ env.VERSION }}
+           image_version: v${{ env.VERSION }}-ckp
+           docker_image_version_: v${{ env.VERSION }}
         run: |
           docker login -u kubedrona -p $docker_pass
           cd _output/release-images/amd64
@@ -177,10 +178,10 @@ jobs:
           docker load -i kube-controller-manager.tar
           docker load -i kube-apiserver.tar
 
-          docker tag registry.k8s.io/kube-apiserver-amd64:$docker_image_version coredgeio/kube-apiserver:$docker_image_version
-          docker tag registry.k8s.io/kube-proxy-amd64:$docker_image_version coredgeio/kube-proxy:$docker_image_version
-          docker tag registry.k8s.io/kube-scheduler-amd64:$docker_image_version coredgeio/kube-scheduler:$docker_image_version
-          docker tag registry.k8s.io/kube-controller-manager-amd64:$docker_image_version coredgeio/kube-controller-manager:$docker_image_version
+          docker tag registry.k8s.io/kube-apiserver-amd64:$image_version coredgeio/kube-apiserver:$docker_image_version
+          docker tag registry.k8s.io/kube-proxy-amd64:$image_version coredgeio/kube-proxy:$docker_image_version
+          docker tag registry.k8s.io/kube-scheduler-amd64:$image_version coredgeio/kube-scheduler:$docker_image_version
+          docker tag registry.k8s.io/kube-controller-manager-amd64:$image_version coredgeio/kube-controller-manager:$docker_image_version
           
           export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
           docker trust sign coredgeio/kube-apiserver:$docker_image_version
