@@ -2,8 +2,8 @@ name: push deb
 env:
   VERSION: "1.26.10"
   PATH: "/home/core/actions-runner/_work/ckp-deb/ckp-deb"
-  Docker_user_name: "kubedrona"
-  Docker_pass: ${{secrets.DOCKER_PASSWORD}}
+  DOCKER_USER: "kubedrona"
+  DOCKER_PASS: ${{secrets.DOCKER_PASSWORD}}
 on: [ workflow_dispatch ]
 jobs:
   script:
@@ -58,12 +58,12 @@ jobs:
             mkdir local-bin/
             curl -L https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=local-bin bash
             export PATH=$PWD/local-bin/:$PATH
-            docker login -u ${{Docker_user_name}} -p ${{Docker_pass}}
+            docker login -u ${{DOCKER_USER}} -p ${{DOCKER_PASS}}
             echo Pushing bundle "$*"
             imgpkg push -f . -i $@
             echo Done
             EOF
 
             docker build -t byoh-build-push-bundle .
-            docker run --rm -v /ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/${{env.Docker_user_name}}/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
+            docker run --rm -v /ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/${{env.DOCKER_USER}}/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
 
