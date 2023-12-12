@@ -22,8 +22,7 @@ jobs:
             rm -rf Dockerfile
             touch Dockerfile
             cat <<EOF > Dockerfile
-            ARG BASE_IMAGE=ubuntu:20.04
-            FROM $BASE_IMAGE as build
+            FROM ubuntu:20.04 as build
             ENV CONTAINERD_VERSION=1.6.18
             ENV KUBERNETES_VERSION=${{env.VERSION}}-00
             ENV ARCH=amd64
