@@ -46,9 +46,9 @@ jobs:
             pwd
             cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
             rm -rf kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb
-            mv /tmp/ckp-deb/kubelet_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
-            mv /tmp/ckp-deb/kubeadm_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
-            mv /tmp/ckp-deb/kubectl_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
+            mv /tmp/ckp-deb/kubelet_${{env.VERSION}}-00_amd64.deb .
+            mv /tmp/ckp-deb/kubeadm_${{env.VERSION}}-00_amd64.deb .
+            mv /tmp/ckp-deb/kubectl_${{env.VERSION}}-00_amd64.deb .
       - name: Pushing bundles
         shell: bash
         env: 
