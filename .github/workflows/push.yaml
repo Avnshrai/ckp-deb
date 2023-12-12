@@ -49,7 +49,6 @@ jobs:
       - name: Pushing bundles
         shell: bash
         env: 
-            docker_username: ${{secrets.DOCKER_USERNAME}}
             docker_password: ${{secrets.DOCKER_PASSWORD}}
         run: |
             cd installer/bundle_builder
@@ -60,7 +59,7 @@ jobs:
             mkdir local-bin/
             curl -L https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=local-bin bash
             export PATH=$PWD/local-bin/:$PATH
-            docker login -u ${{docker_username}} -p ${{docker_password}}
+            docker login -u kubedrona -p ${{docker_password}}
             echo Pushing bundle "$*"
             imgpkg push -f . -i $@
             echo Done
