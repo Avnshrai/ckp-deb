@@ -61,9 +61,9 @@ jobs:
             cat <<EOF > push-bundle.sh
             #!/bin/bash
             set -e
-            mkdir local-bin/
-            curl -L https://carvel.dev/install.sh | K14SIO_INSTALL_BIN_DIR=local-bin bash
-            export PATH=$PWD/local-bin/:$PATH
+            wget https://github.com/carvel-dev/imgpkg/releases/download/v0.39.0/imgpkg-linux-amd64
+            chmod +x imgpkg-linux-amd64
+            mv imgpkg-linux-amd64 /usr/bin/imgpkg
             docker login -u kubedrona -p ${{ env.docker_pass }}
             echo Pushing bundle "$*"
             imgpkg push -f . -i $@
