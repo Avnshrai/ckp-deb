@@ -178,20 +178,20 @@ jobs:
           docker load -i kube-controller-manager.tar
           docker load -i kube-apiserver.tar
 
-          docker tag registry.k8s.io/kube-apiserver-amd64:$image_version coredgeio/kube-apiserver:$docker_image_version
-          docker tag registry.k8s.io/kube-proxy-amd64:$image_version coredgeio/kube-proxy:$docker_image_version
-          docker tag registry.k8s.io/kube-scheduler-amd64:$image_version coredgeio/kube-scheduler:$docker_image_version
-          docker tag registry.k8s.io/kube-controller-manager-amd64:$image_version coredgeio/kube-controller-manager:$docker_image_version
+          sudo docker tag registry.k8s.io/kube-apiserver-amd64:$image_version coredgeio/kube-apiserver:$docker_image_version
+          sudo docker tag registry.k8s.io/kube-proxy-amd64:$image_version coredgeio/kube-proxy:$docker_image_version
+          sudo docker tag registry.k8s.io/kube-scheduler-amd64:$image_version coredgeio/kube-scheduler:$docker_image_version
+          sudo docker tag registry.k8s.io/kube-controller-manager-amd64:$image_version coredgeio/kube-controller-manager:$docker_image_version
           
           export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
-          docker trust sign coredgeio/kube-apiserver:$docker_image_version
-          docker trust sign coredgeio/kube-proxy:$docker_image_version
-          docker trust sign coredgeio/kube-scheduler:$docker_image_version
-          docker trust sign coredgeio/kube-controller-manager:$docker_image_version
-          docker push coredgeio/kube-apiserver:$docker_image_version
-          docker push coredgeio/kube-proxy:$docker_image_version
-          docker push coredgeio/kube-scheduler:$docker_image_version
-          docker push coredgeio/kube-controller-manager:$docker_image_version   
+          sudo docker trust sign coredgeio/kube-apiserver:$docker_image_version
+          sudo docker trust sign coredgeio/kube-proxy:$docker_image_version
+          sudo docker trust sign coredgeio/kube-scheduler:$docker_image_version
+          sudo docker trust sign coredgeio/kube-controller-manager:$docker_image_version
+          sudo docker push coredgeio/kube-apiserver:$docker_image_version
+          sudo docker push coredgeio/kube-proxy:$docker_image_version
+          sudo docker push coredgeio/kube-scheduler:$docker_image_version
+          sudo docker push coredgeio/kube-controller-manager:$docker_image_version   
 
       # - name: upload_artifacts
       #   uses: actions/upload-artifact@v3
