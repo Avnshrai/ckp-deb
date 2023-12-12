@@ -1,7 +1,6 @@
 name: push deb
 env:
   VERSION: "1.26.10"
-  PATH: "/home/core/actions-runner/_work/ckp-deb/ckp-deb"
 on: [ workflow_dispatch ]
 jobs:
   script:
@@ -42,6 +41,9 @@ jobs:
             chmod 777 byoh-ingredients-download
             docker run --rm -v `pwd`/byoh-ingredients-download:/ingredients byoh-ingredients-deb
       - name: Moving custom deb packages
+        shell: bash
+        env: 
+            PATH: "/home/core/actions-runner/_work/ckp-deb/ckp-deb"
         run: |
             cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
             rm -rf kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb
