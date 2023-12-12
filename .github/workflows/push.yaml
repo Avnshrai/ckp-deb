@@ -78,6 +78,22 @@ jobs:
             pwd
             cd installer/bundle_builder
             rm -rf push-bundle.sh
+            rm -rf Dockerfile
+            cat <<EOF > Dockerfile
+            FROM ubuntu:20.04
+            ENV BUILD_ONLY=1
+            WORKDIR /bundle-builder
+            COPY *.sh ./
+            RUN apt-get update
+            RUN apt  install -y curl docker.io
+            RUN chmod a+x *.sh
+            COPY config/ubuntu/20_04/k8s/1_22 /config/
+            RUN mkdir /ingredients && mkdir /bundle
+            ENV PATH="/bundle-builder:${PATH}"
+            WORKDIR /tmp/bundle
+            ENTRYPOINT ["build-push-bundle.sh", "/ingredients", "/config"]
+            EOF
+            
             cat <<EOF > push-bundle.sh
             #!/bin/bash
             set -e
