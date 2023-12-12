@@ -43,6 +43,7 @@ jobs:
         shell: bash
         if: ${{ ! cancelled() }}
         run: |
+            pwd
             cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
             rm -rf kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb
             mv /tmp/ckp-deb/kubelet_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
@@ -54,6 +55,7 @@ jobs:
            docker_pass: ${{ secrets.DOCKER_PASSWORD }}
         if: ${{ ! cancelled() }}
         run: |
+            pwd
             cd installer/bundle_builder
             rm -rf push-bundle.sh
             cat <<EOF > push-bundle.sh
