@@ -184,10 +184,6 @@ jobs:
           sudo docker tag registry.k8s.io/kube-controller-manager-amd64:$image_version coredgeio/kube-controller-manager:$docker_image_version
           
           export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
-          # sudo DOCKER_CONTENT_TRUST=1 docker trust sign coredgeio/kube-apiserver:$docker_image_version
-          # sudo DOCKER_CONTENT_TRUST=1 docker trust sign coredgeio/kube-proxy:$docker_image_version
-          # sudo DOCKER_CONTENT_TRUST=1 docker trust sign coredgeio/kube-scheduler:$docker_image_version
-          # sudo DOCKER_CONTENT_TRUST=1 docker trust sign coredgeio/kube-controller-manager:$docker_image_version
           sudo DOCKER_CONTENT_TRUST=1 docker push coredgeio/kube-apiserver:$docker_image_version
           sudo DOCKER_CONTENT_TRUST=1 docker push coredgeio/kube-proxy:$docker_image_version
           sudo DOCKER_CONTENT_TRUST=1 docker push coredgeio/kube-scheduler:$docker_image_version
