@@ -1,4 +1,4 @@
-name: push deb to dockerhub
+name: push deb
 env:
   VERSION: "1.26.10"
   PATH: "/home/core/actions-runner/_work/ckp-deb/ckp-deb"
