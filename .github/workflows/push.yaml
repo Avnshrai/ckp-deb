@@ -2,8 +2,6 @@ name: push deb
 env:
   VERSION: "1.26.10"
   PATH: "/home/core/actions-runner/_work/ckp-deb/ckp-deb"
-  DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
-  DOCKER_PASS: ${{secrets.DOCKER_PASSWORD}}
 on: [ workflow_dispatch ]
 jobs:
   script:
@@ -49,6 +47,10 @@ jobs:
             rm -rf kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb
             mv ${{env.PATH}}/kubelet_${{env.VERSION}}-00_amd64.deb ${{env.PATH}}/kubeadm_${{env.VERSION}}-00_amd64.deb ${{env.PATH}}/kubectl_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
       - name: Pushing bundles
+        shell: bash
+        env: 
+            DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+            DOCKER_PASS: ${{secrets.DOCKER_PASSWORD}}
         run: |
             cd installer/bundle_builder
             rm -rf push-bundle.sh
