@@ -1,9 +1,9 @@
 name: push deb to dockerhub
 env:
   VERSION: "1.26.10"
-  PATH: ""
+  PATH: "/home/core/actions-runner/_work/ckp-deb/ckp-deb"
   Docker_user_name: "kubedrona"
-  Docker_pass: ""
+  Docker_pass: ${{secrets.DOCKER_PASSWORD}}
 on: [ workflow_dispatch ]
 jobs:
   script:
@@ -47,7 +47,7 @@ jobs:
         run: |
             cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
             rm -rf kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb
-            mv PATH/kubelet_${{env.VERSION}}-00_amd64.deb kubeadm_${{env.VERSION}}-00_amd64.deb kubectl_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
+            mv ${{env.PATH}}/kubelet_${{env.VERSION}}-00_amd64.deb ${{env.PATH}}/kubeadm_${{env.VERSION}}-00_amd64.deb ${{env.PATH}}/kubectl_${{env.VERSION}}-00_amd64.deb installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
       - name: Pushing bundles
         run: |
             cd installer/bundle_builder
@@ -65,5 +65,5 @@ jobs:
             EOF
 
             docker build -t byoh-build-push-bundle .
-            docker run --rm -v /ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/avnshrai/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v1.26.6
+            docker run --rm -v /ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/${{env.Docker_user_name}}/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
 
