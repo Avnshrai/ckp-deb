@@ -27,6 +27,7 @@ jobs:
 
       - name: exporting env's and building deb's
         run:  |
+           rm -rf /tmp/ckp-deb/*
            export KUBE_GIT_MAJOR=1
            export KUBE_GIT_COMMIT='b8609d4dd75c5d6fba4a5eaa63a5507cb39a6e99'
            export KUBE_GIT_MINOR='26+'
