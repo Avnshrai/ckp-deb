@@ -5,7 +5,7 @@
 # It was finished successfully
 name: final_ci
 env:
-  VERSION: "1.26.9"
+  VERSION: "1.26.10"
   RELEASE-VERSION: "release-1.26"
 on: [ workflow_dispatch ]
 jobs:
