@@ -107,5 +107,8 @@ jobs:
             EOF
 
             docker build -t byoh-build-push-bundle .
+            echo "**************"
+            pwd
+            echo "*************"
             docker run --rm -v /ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
 
