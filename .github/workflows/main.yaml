@@ -5,7 +5,7 @@
 # It was finished successfully
 name: final_ci
 env:
-  VERSION: "1.26.10"
+  VERSION: "1.26.9"
   RELEASE-VERSION: "release-1.26"
 on: [ workflow_dispatch ]
 jobs:
@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
         with:
            repository: 'kubernetes/kubernetes'
-           ref: 'b8609d4dd75c5d6fba4a5eaa63a5507cb39a6e99'
+           ref: 'd1483fdf7a0578c83523bc1e2212a606a44fd71d'
       - name: Installing make
         run: sudo apt install make dpkg -y
 
