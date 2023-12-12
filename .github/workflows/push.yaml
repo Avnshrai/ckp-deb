@@ -2,7 +2,7 @@ name: push deb
 env:
   VERSION: "1.26.10"
   PATH: "/home/core/actions-runner/_work/ckp-deb/ckp-deb"
-  DOCKER_USER: "kubedrona"
+  DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
   DOCKER_PASS: ${{secrets.DOCKER_PASSWORD}}
 on: [ workflow_dispatch ]
 jobs:
