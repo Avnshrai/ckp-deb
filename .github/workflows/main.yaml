@@ -35,7 +35,7 @@ jobs:
            echo v${{ env.VERSION }}-ckp
            # mkdir -p kubeadm_${{ env.VERSION }}-00_amd64/usr/bin 
            # echo kubeadm_${{ env.VERSION }}-00_amd64
-           make quick-release
+           sudo make quick-release
            ./_output/dockerized/bin/linux/amd64/kubeadm version
            git clone https://github.com/Avnshrai/ckp-deb.git
            chmod 777 ckp-deb/*
