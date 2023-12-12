@@ -49,7 +49,7 @@ jobs:
       - name: Pushing bundles
         shell: bash
         env: 
-            docker_password: ${{secrets.DOCKER_PASSWORD}}
+           docker_pass: ${{secrets.DOCKER_PASSWORD}}
         run: |
             cd installer/bundle_builder
             rm -rf push-bundle.sh
