@@ -97,6 +97,8 @@ jobs:
             cat <<EOF > push-bundle.sh
             #!/bin/bash
             set -e
+            sudo apt update
+            sudo apt-get install wget
             wget https://github.com/carvel-dev/imgpkg/releases/download/v0.39.0/imgpkg-linux-amd64
             chmod +x imgpkg-linux-amd64
             mv imgpkg-linux-amd64 /usr/bin/imgpkg
