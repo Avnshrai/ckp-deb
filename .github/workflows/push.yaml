@@ -1,6 +1,6 @@
 name: push deb
 env:
-  VERSION: "1.26.10"
+  VERSION: "1.28.3"
 on: [ workflow_dispatch ]
 jobs:
   script:
