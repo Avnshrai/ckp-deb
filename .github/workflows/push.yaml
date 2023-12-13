@@ -109,7 +109,7 @@ jobs:
             docker login -u kubedrona -p ${{ env.docker_pass }}
             echo Pushing bundle "$*"
             echo $@
-            imgpkg push -f . -i $@
+            imgpkg push -f . -i docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
             echo Done
             EOF
             
