@@ -22,6 +22,7 @@ jobs:
         with:
            repository: 'coredgeio/ckp'
            ref: '741c8db18a52787d734cbe4795f0b4ad860906d6'
+           token: ${{ secrets.GH_PAT }}
       - name: Installing make
         run: sudo apt install make dpkg -y
 
