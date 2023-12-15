@@ -5,8 +5,8 @@
 # It was finished successfully
 name: final_ci
 env:
-  VERSION: "1.28.3"
-  RELEASE-VERSION: "release-1.28"
+  VERSION: "1.27.6"
+  RELEASE-VERSION: "release-1.27"
 on: [ workflow_dispatch ]
 jobs:
   script:
@@ -20,8 +20,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-           repository: 'kubernetes/kubernetes'
-           ref: 'a8a1abc25cad87333840cd7d54be2efaf31a3177'
+           repository: 'coredgeio/ckp'
+           ref: '741c8db18a52787d734cbe4795f0b4ad860906d6'
       - name: Installing make
         run: sudo apt install make dpkg -y
 
@@ -30,7 +30,7 @@ jobs:
            rm -rf /tmp/ckp-deb/*
            export KUBE_GIT_MAJOR=1
            export KUBE_GIT_COMMIT='b8609d4dd75c5d6fba4a5eaa63a5507cb39a6e99'
-           export KUBE_GIT_MINOR='28+'
+           export KUBE_GIT_MINOR='27+'
            export KUBE_GIT_VERSION='v${{ env.VERSION }}-ckp'
            export KUBE_GIT_TREE_STATE='clean'
            echo v${{ env.VERSION }}-ckp
