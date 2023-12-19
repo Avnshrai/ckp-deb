@@ -5,7 +5,7 @@
 # It was finished successfully
 name: final_ci
 env:
-  VERSION: "1.26.9"
+  VERSION: "1.26.10"
   RELEASE-VERSION: "release-1.26"
 on: [ workflow_dispatch ]
 jobs:
@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
         with:
            repository: 'coredgeio/ckp'
-           ref: 'd1483fdf7a0578c83523bc1e2212a606a44fd71d'
+           ref: 'b8609d4dd75c5d6fba4a5eaa63a5507cb39a6e99'
            token: ${{ secrets.GH_PAT }}
       - name: Installing make
         run: sudo apt install make dpkg -y
@@ -30,7 +30,7 @@ jobs:
         run:  |
            rm -rf /tmp/ckp-deb/*
            export KUBE_GIT_MAJOR=1
-           export KUBE_GIT_COMMIT='d1483fdf7a0578c83523bc1e2212a606a44fd71d'
+           export KUBE_GIT_COMMIT='b8609d4dd75c5d6fba4a5eaa63a5507cb39a6e99'
            export KUBE_GIT_MINOR='26+'
            export KUBE_GIT_VERSION='v${{ env.VERSION }}-ckp'
            export KUBE_GIT_TREE_STATE='clean'
