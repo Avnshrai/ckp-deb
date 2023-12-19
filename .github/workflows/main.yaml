@@ -152,8 +152,8 @@ jobs:
            Priority: optional
            Homepage: https://kubernetes.io
            Description: Kubernetes Command Line Tool
-           The Kubernetes command line tool for interacting with the Kubernetes API.
            EOF
+           
            cat kubectl/md5sums > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/md5sums
            cat kubectl/postinst > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            chmod 775 kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
