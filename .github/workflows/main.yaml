@@ -142,6 +142,18 @@ jobs:
            touch kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/control
            touch kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/md5sums
            touch kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
+           cat <<EOF> kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/control
+           Package: kubectl
+           Version: ${{ env.VERSION }}-00
+           Architecture: amd64
+           Maintainer: Kubernetes Authors <kubernetes-dev+release@googlegroups.com>
+           Installed-Size: 47585
+           Section: misc
+           Priority: optional
+           Homepage: https://kubernetes.io
+           Description: Kubernetes Command Line Tool
+           The Kubernetes command line tool for interacting with the Kubernetes API.
+           EOF
            cat kubectl/control > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/control
            cat kubectl/md5sums > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/md5sums
            cat kubectl/postinst > kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
