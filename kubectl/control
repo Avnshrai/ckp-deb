@@ -1,5 +1,5 @@
 Package: kubectl
-Version: 1.26.9-00
+Version: 1.29.0-00
 Architecture: amd64
 Maintainer: Kubernetes Authors <kubernetes-dev+release@googlegroups.com>
 Installed-Size: 47585
