@@ -29,7 +29,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y apt-transport-https ca-certificates curl
             echo Download containerd
-            curl -LOJR https://github.com/containerd/containerd/releases/download/v1.6.18/cri-containerd-cni-1.6.18-linux-amd64.tar.gz
+            curl -LOJR https://github.com/containerd/containerd/releases/download/v1.7.0/cri-containerd-cni-1.7.0-linux-amd64.tar.gz
             echo Download the Google Cloud public signing key
             sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://dl.k8s.io/apt/doc/apt-key.gpg
             echo Add the Kubernetes apt repository
@@ -43,7 +43,7 @@ jobs:
             touch Dockerfile
             cat <<EOF > Dockerfile
             FROM ubuntu:20.04 as build
-            ENV CONTAINERD_VERSION=1.6.18
+            ENV CONTAINERD_VERSION=1.7.0
             ENV KUBERNETES_VERSION=${{env.VERSION}}-00
             ENV ARCH=amd64
             RUN apt-get update \
