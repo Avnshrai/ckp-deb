@@ -36,7 +36,7 @@ jobs:
             echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
             echo Update apt package index, install kubelet, kubeadm and kubectl
             sudo apt-get update
-            sudo apt-get download kubernetes-cni:$ARCH=1.1.1-00
+            sudo apt-get download kubernetes-cni:$ARCH=1.3.0-00
             sudo apt-get download cri-tools:$ARCH=1.25.0-00
             EOF
             
@@ -109,7 +109,7 @@ jobs:
             docker login -u kubedrona -p ${{ env.docker_pass }}
             echo Pushing bundle "$*"
             echo $@
-            imgpkg push -f . -i docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
+            imgpkg push -f . -i docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}-rc1
             echo Done
             EOF
             
@@ -117,5 +117,5 @@ jobs:
             echo "**************"
             pwd
             echo "*************"
-            docker run --rm -v `pwd`/ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
+            docker run --rm -v `pwd`/ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}-rc1
 
