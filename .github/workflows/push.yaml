@@ -35,7 +35,7 @@ jobs:
             echo Add the Kubernetes apt repository
             # echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
             echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-            curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+            curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
             sudo apt update
             echo Update apt package index, install kubelet, kubeadm and kubectl
             sudo apt-get update
@@ -64,7 +64,7 @@ jobs:
             docker run --rm -v `pwd`/byoh-ingredients-download:/ingredients byoh-ingredients-deb
       - name: Moving custom deb packages
         shell: bash
-        if: ${{ ! cancelled() }}
+        # if: ${{ ! cancelled() }}
         run: |
             pwd
             cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
@@ -76,7 +76,7 @@ jobs:
         shell: bash
         env: 
            docker_pass: ${{ secrets.DOCKER_PASSWORD }}
-        if: ${{ ! cancelled() }}
+        # if: ${{ ! cancelled() }}
         run: |
             pwd
             cd installer/bundle_builder
