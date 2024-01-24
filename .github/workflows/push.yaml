@@ -46,6 +46,9 @@ jobs:
             sudo apt-get install wget
             sudo apt-get download cri-tools:$ARCH=1.25.0-00
             wget https://gist.githubusercontent.com/oradwell/31ef858de3ca43addef68ff971f459c2/raw/5099df007eb717a11825c3890a0517892fa12dbf/containerd-config.toml
+            mkdir containerd-config
+            mv containerd-config.toml containerd-config
+            tar -czvf containerd-config.tar.gz containerd-config
             EOF
             
             touch Dockerfile
