@@ -43,7 +43,7 @@ jobs:
             # sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://dl.k8s.io/apt/doc/apt-key.gpg
             # echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
             # sudo apt-get update
-            sudo apt-get download cri-tools:$ARCH=1.29.0-00
+            sudo apt-get download cri-tools:$ARCH=1.25.0-00
             wget https://gist.githubusercontent.com/oradwell/31ef858de3ca43addef68ff971f459c2/raw/5099df007eb717a11825c3890a0517892fa12dbf/containerd-config.toml
             EOF
             
