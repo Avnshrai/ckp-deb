@@ -49,6 +49,7 @@ jobs:
             mkdir containerd-config
             mv containerd-config.toml containerd-config
             tar -czvf containerd-config.tar.gz containerd-config
+            rm -rf containerd-config
             EOF
             
             touch Dockerfile
