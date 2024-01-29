@@ -15,8 +15,8 @@ jobs:
   script:
     #runs-on: ubuntu-latest
     runs-on:
-      # - self-hosted
-      - ckp
+      - self-hosted
+      # - ckp
       #- '108'
     name: clone and create deb
     steps:
