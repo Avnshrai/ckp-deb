@@ -38,6 +38,7 @@ jobs:
             sudo apt-get install wget -y 
             echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v${{env.apt-version}}/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
             #sudo curl -fsSLo /etc/apt/keyrings/kubernetes-apt-keyring.gpg  https://pkgs.k8s.io/core:/stable:/v${{env.apt-version}}/deb/Release.key
+            sudo mkdir -p /etc/apt/keyrings
             sudo touch /etc/apt/keyrings/kubernetes-apt-keyring.gpg
             sudo wget -O /etc/apt/keyrings/kubernetes-apt-keyring.gpg  https://pkgs.k8s.io/core:/stable:/v${{env.apt-version}}/deb/Release.key
             echo Update apt package index, install kubelet, kubeadm and kubectl
