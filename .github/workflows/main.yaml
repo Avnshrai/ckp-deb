@@ -189,7 +189,7 @@ jobs:
            docker_pass: ${{secrets.DOCKER_PASSWORD}}
            DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{secrets.DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE}}
            image_version: v${{ env.VERSION }}-ckp
-           docker_image_version: v${{ env.VERSION }}
+           docker_image_version: v${{ env.VERSION }}-rc1
         run: |
           docker login -u kubedrona -p $docker_pass
           cd _output/release-images/amd64
