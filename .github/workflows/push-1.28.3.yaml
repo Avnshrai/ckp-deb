@@ -1,7 +1,7 @@
 name: push deb
 env:
-  VERSION: "1.27.6"
-  apt-version: "1.27"
+  VERSION: "1.28.3"
+  apt-version: "1.28"
 on: [ workflow_dispatch ]
 jobs:
   script:
@@ -46,7 +46,7 @@ jobs:
             echo Update apt package index, install kubelet, kubeadm and kubectl
             sudo apt-get update
             sudo apt-get download kubernetes-cni:$ARCH=1.2.0-2.1
-            sudo apt-get download cri-tools:$ARCH=1.27.1-1.1
+            sudo apt-get download cri-tools:$ARCH=1.28.0-1.1
             EOF
             
             touch Dockerfile
