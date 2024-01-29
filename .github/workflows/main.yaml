@@ -8,15 +8,15 @@
 # It was finished successfully
 name: final_ci
 env:
-  VERSION: "1.29.0"
-  RELEASE-VERSION: "release-1.29"
+  VERSION: "1.27.6"
+  RELEASE-VERSION: "release-1.27"
 on: [ workflow_dispatch ]
 jobs:
   script:
     #runs-on: ubuntu-latest
     runs-on:
-      - self-hosted
-      # - ckp
+      # - self-hosted
+      - ckp
       #- '108'
     name: clone and create deb
     steps:
@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v3
         with:
            repository: 'coredgeio/ckp'
-           ref: '3f7a50f38688eb332e2a1b013678c6435d539ae6'
+           ref: '741c8db18a52787d734cbe4795f0b4ad860906d6'
            token: ${{ secrets.GH_PAT }}
       - name: Installing make
         run: sudo apt install make dpkg -y
@@ -33,8 +33,8 @@ jobs:
         run:  |
            rm -rf /tmp/ckp-deb/*
            export KUBE_GIT_MAJOR=1
-           export KUBE_GIT_COMMIT='3f7a50f38688eb332e2a1b013678c6435d539ae6'
-           export KUBE_GIT_MINOR='29+'
+           export KUBE_GIT_COMMIT='741c8db18a52787d734cbe4795f0b4ad860906d6'
+           export KUBE_GIT_MINOR='26+'
            export KUBE_GIT_VERSION='v${{ env.VERSION }}-ckp'
            export KUBE_GIT_TREE_STATE='clean'
            echo v${{ env.VERSION }}-ckp
@@ -72,7 +72,7 @@ jobs:
            touch kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/control 
            cat <<EOF > kubeadm_${{ env.VERSION }}-00_amd64/DEBIAN/control
            Package: kubeadm
-           Version: ${{ env.VERSION }}
+           Version: ${{ env.VERSION }}-ckp
            Maintainer: Coredge.io 
            Depends: libc6
            Architecture: amd64
@@ -108,7 +108,7 @@ jobs:
            touch kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/control 
            cat <<EOF > kubelet_${{ env.VERSION }}-00_amd64/DEBIAN/control
            Package: kubelet 
-           Version: ${{ env.VERSION }}
+           Version: ${{ env.VERSION }}-ckp
            Maintainer: Coredge.io 
            Depends: libc6
            Architecture: amd64
@@ -147,7 +147,7 @@ jobs:
            touch kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/postinst
            cat <<EOF> kubectl_${{ env.VERSION }}-00_amd64/DEBIAN/control
            Package: kubectl
-           Version: ${{ env.VERSION }}-00
+           Version: ${{ env.VERSION }}-ckp
            Architecture: amd64
            Maintainer: Kubernetes Authors <kubernetes-dev+release@googlegroups.com>
            Installed-Size: 47585
@@ -189,7 +189,7 @@ jobs:
            docker_pass: ${{secrets.DOCKER_PASSWORD}}
            DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{secrets.DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE}}
            image_version: v${{ env.VERSION }}-ckp
-           docker_image_version: v${{ env.VERSION }}-rc1
+           docker_image_version: v${{ env.VERSION }}
         run: |
           docker login -u kubedrona -p $docker_pass
           cd _output/release-images/amd64
@@ -204,10 +204,10 @@ jobs:
           docker tag registry.k8s.io/kube-controller-manager-amd64:$image_version coredgeio/kube-controller-manager:$docker_image_version
           
           export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
-          docker push coredgeio/kube-apiserver:$docker_image_version
-          docker push coredgeio/kube-proxy:$docker_image_version
-          docker push coredgeio/kube-scheduler:$docker_image_version
-          docker push coredgeio/kube-controller-manager:$docker_image_version 
+          sudo docker push coredgeio/kube-apiserver:$docker_image_version
+          sudo docker push coredgeio/kube-proxy:$docker_image_version
+          sudo docker push coredgeio/kube-scheduler:$docker_image_version
+          sudo docker push coredgeio/kube-controller-manager:$docker_image_version 
     
 
       # - name: upload_artifacts
