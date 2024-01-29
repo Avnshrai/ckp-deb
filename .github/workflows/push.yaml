@@ -32,7 +32,7 @@ jobs:
             echo Download containerd
             curl -LOJR https://github.com/containerd/containerd/releases/download/v1.6.18/cri-containerd-cni-1.6.18-linux-amd64.tar.gz
             echo Download the Google Cloud public signing key
-            # sudo apt-get install gpg -y
+            sudo apt-get install gpg -y
             # sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://dl.k8s.io/apt/doc/apt-key.gpg
             sudo apt-get update
             sudo apt-get install wget -y 
