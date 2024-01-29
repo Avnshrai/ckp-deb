@@ -31,25 +31,13 @@ jobs:
             echo Download containerd
             curl -LOJR https://github.com/containerd/containerd/releases/download/v1.6.18/cri-containerd-cni-1.6.18-linux-amd64.tar.gz
             echo Download the Google Cloud public signing key
+            sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://dl.k8s.io/apt/doc/apt-key.gpg
             echo Add the Kubernetes apt repository
-            echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-            sudo apt-get install gpg -y
-            sudo mkdir -p /etc/apt/keyrings/
-            curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-            sudo apt update
+            echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
             echo Update apt package index, install kubelet, kubeadm and kubectl
             sudo apt-get update
-            sudo apt-get download kubernetes-cni:$ARCH=1.3.0-1.1
-            sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://dl.k8s.io/apt/doc/apt-key.gpg
-            echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-            sudo apt-get update
-            sudo apt-get install wget
+            sudo apt-get download kubernetes-cni:$ARCH=1.1.1-00
             sudo apt-get download cri-tools:$ARCH=1.25.0-00
-            wget https://gist.githubusercontent.com/oradwell/31ef858de3ca43addef68ff971f459c2/raw/5099df007eb717a11825c3890a0517892fa12dbf/containerd-config.toml
-            mkdir containerd-config
-            mv containerd-config.toml containerd-config
-            tar -czvf containerd-config.tar.gz containerd-config
-            rm -rf containerd-config
             EOF
             
             touch Dockerfile
@@ -73,7 +61,7 @@ jobs:
             docker run --rm -v `pwd`/byoh-ingredients-download:/ingredients byoh-ingredients-deb
       - name: Moving custom deb packages
         shell: bash
-        # if: ${{ ! cancelled() }}
+        if: ${{ ! cancelled() }}
         run: |
             pwd
             cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
@@ -85,7 +73,7 @@ jobs:
         shell: bash
         env: 
            docker_pass: ${{ secrets.DOCKER_PASSWORD }}
-        # if: ${{ ! cancelled() }}
+        if: ${{ ! cancelled() }}
         run: |
             pwd
             cd installer/bundle_builder
@@ -121,7 +109,7 @@ jobs:
             docker login -u kubedrona -p ${{ env.docker_pass }}
             echo Pushing bundle "$*"
             echo $@
-            imgpkg push -f . -i docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}-rc1
+            imgpkg push -f . -i docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
             echo Done
             EOF
             
@@ -129,5 +117,4 @@ jobs:
             echo "**************"
             pwd
             echo "*************"
-            docker run --rm -v `pwd`/ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}-rc1
-
+            docker run --rm -v `pwd`/ingredients/deb/byoh-ingredients-download:/ingredients --env BUILD_ONLY=0 byoh-build-push-bundle docker.io/coredgeio/byoh-bundle-ubuntu_20.04.1_x86-64_k8s:v${{env.VERSION}}
