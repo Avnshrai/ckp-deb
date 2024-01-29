@@ -32,6 +32,7 @@ jobs:
             echo Download containerd
             curl -LOJR https://github.com/containerd/containerd/releases/download/v1.6.18/cri-containerd-cni-1.6.18-linux-amd64.tar.gz
             echo Download the Google Cloud public signing key
+            sudo apt-get install gpg -y
             sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://dl.k8s.io/apt/doc/apt-key.gpg
             echo Add the Kubernetes apt repositoryecho "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v${{env.apt-version}}/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
             curl -fsSL https://pkgs.k8s.io/core:/stable:/v${{env.apt-version}}/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -62,7 +63,6 @@ jobs:
             docker run --rm -v `pwd`/byoh-ingredients-download:/ingredients byoh-ingredients-deb
       - name: Moving custom deb packages
         shell: bash
-        if: ${{ ! cancelled() }}
         run: |
             pwd
             cd installer/bundle_builder/ingredients/deb/byoh-ingredients-download/
@@ -74,7 +74,6 @@ jobs:
         shell: bash
         env: 
            docker_pass: ${{ secrets.DOCKER_PASSWORD }}
-        if: ${{ ! cancelled() }}
         run: |
             pwd
             cd installer/bundle_builder
