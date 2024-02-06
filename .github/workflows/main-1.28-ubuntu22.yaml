@@ -6,7 +6,7 @@
 #1.28.3 - a8a1abc25cad87333840cd7d54be2efaf31a3177
 #1.29.0 - 3f7a50f38688eb332e2a1b013678c6435d539ae6
 # It was finished successfully
-name: final_ci-1.28.3
+name: final_ci-1.28.3-ubuntu-22
 env:
   VERSION: "1.28.3"
   RELEASE-VERSION: "release-1.28"
