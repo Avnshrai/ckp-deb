@@ -51,7 +51,7 @@ jobs:
             
             touch Dockerfile
             cat <<EOF > Dockerfile
-            FROM ubuntu:20.04 as build
+            FROM ubuntu:22.04 as build
             ENV CONTAINERD_VERSION=1.6.18
             ENV KUBERNETES_VERSION=${{env.VERSION}}-00
             ENV ARCH=amd64
@@ -87,14 +87,14 @@ jobs:
             rm -rf push-bundle.sh
             rm -rf Dockerfile
             cat <<EOF > Dockerfile
-            FROM ubuntu:20.04
+            FROM ubuntu:22.04
             ENV BUILD_ONLY=1
             WORKDIR /bundle-builder
             COPY *.sh ./
             RUN apt-get update
             RUN apt  install -y curl docker.io
             RUN chmod a+x *.sh
-            COPY config/ubuntu/20_04/k8s/1_22 /config/
+            COPY config/ubuntu/22_04/k8s/1_22 /config/
             RUN mkdir /ingredients && mkdir /bundle
             ENV PATH="/bundle-builder:${PATH}"
             WORKDIR /tmp/bundle
