@@ -1,4 +1,4 @@
-name: push deb-1.28.3
+name: push deb-1.28.3-ubuntu-22
 env:
   VERSION: "1.28.3"
   apt-version: "1.28"
